@@ -52,17 +52,29 @@ namespace ConciergeAI.Services
 }
 
 
-public async Task<ClientModel?> GetClientByWhatsApp(string whatsappNumber)
+public async Task<ClientModel?> GetClientByPhoneNumber(string phoneNumber)
 {
     await _client.InitializeAsync();
 
     // Utiliser SingleOrDefaultAsync au lieu de SingleOrDefault
     var client = await _client
         .From<ClientModel>()
-        .Where(c => c.WhatsappNumber == whatsappNumber)
+        .Where(c => c.WhatsappNumber == phoneNumber)
         .Single();
 
     return client;
+}
+
+public async Task TestConnection()
+{
+   var client = new Supabase.Client(url, key);
+await client.InitializeAsync();
+
+// Exemple simple pour tester la connexion
+var table = client.From<ClientModel>();
+var data = await table.Get();
+Console.WriteLine($"Nombre de clients : {data.Count}");
+
 }
 
 
